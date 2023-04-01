@@ -9,6 +9,8 @@ const Blog = ({ blog, updateLike, removeBlog, currentUser }) => {
     borderWidth: 1,
     marginBottom: 5
   }
+  //console.log(blog)
+  //console.log(currentUser._id)
 
   return (
     <div style={blogStyle}>

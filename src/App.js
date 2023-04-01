@@ -23,6 +23,7 @@ const App = () => {
 
   const blogit = blogs.sort(((a, b) => b.likes - a.likes))
   //console.log(blogit)
+  console.log(errorMessage)
 
   useEffect(() => {
     blogService.getAll().then(blogs =>
@@ -82,8 +83,9 @@ const App = () => {
     console.log('Log in using', username, password)
   }
 
-  const handleLogout = (event) => {
-    event.preventDefault()
+  //Käsitellään uloskirjautuminen
+  const handleLogout = () => {
+    //event.preventDefault()
     window.localStorage.removeItem(
       'LoggedBlogger', JSON.stringify(user)
     )
@@ -91,36 +93,6 @@ const App = () => {
     console.log('loggin out', username)
   }
 
-  /*
-  //apufunktio kirjautumislomakkeen luontia varten
-  const loginForm = () => (
-    <div>
-    <h3>Log in to application</h3>
-    <form onSubmit={handleLogin}>
-    <div>
-      username
-        <input
-        type="text"
-        value={username}
-        name="username"
-        onChange={({ target }) => setUsername(target.value)}
-        />
-    </div>
-    <div>
-      password
-        <input
-        type="text"
-        value={password}
-        name="password"
-        onChange={({ target }) => setPassword(target.value)}
-        />
-    </div>
-    <button type="submit">Login</button>
-  </form>
-  </div>
-  )
-
-  */
   //blogien lisäys funktio
   const addBlog = (event) => {
     event.preventDefault()
@@ -140,13 +112,6 @@ const App = () => {
         notifyWith(`Added ${blogObject.title}` )
       })
   }
-
-  /*
-  //Käsittelee blogi formin muuttumisen
-  const handelBlogChange = (event) => {
-    setNewBlog(event.target.value)
-  }
-*/
 
   //Lisätään tykkäys
   const updateLike = (blog) => {
@@ -169,13 +134,13 @@ const App = () => {
     if ( ok ) {
       blogService.remove(blog.id).then( () => {
         setBlogs(blogs.filter(b => b.id !== blog.id))
-        notifyWith(`number of ${blog.name} deleted!`)
+        notifyWith(`${blog.title} deleted!`)
       })
     }
   }
 
 
-
+  //Jos käyttäjä ei ole kirjautunut niin näytetään vain login
   if (user === null) {
     return (
       <div>
@@ -196,7 +161,7 @@ const App = () => {
   return (
     <div>
       <h2>Blogs</h2>
-      <Notification info={errorMessage} />
+      <Notification info={info} />
       <form onSubmit={handleLogout}>
         <p>{user.name} logged in
           <button type='submit'>Log out</button></p>
@@ -214,7 +179,7 @@ const App = () => {
       </Togglable>
       <p></p>
       {blogit.map(blog =>
-        <Blog key={blog.id} blog={blog} updateLike={updateLike} removeBlog={removeBlog} currentUser={user.name}/>
+        <Blog key={blog.id} blog={blog} updateLike={updateLike} removeBlog={removeBlog} currentUser={user}/>
       )}
     </div>
   )

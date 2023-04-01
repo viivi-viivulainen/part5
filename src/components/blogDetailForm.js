@@ -1,6 +1,9 @@
 const BlogDetailForm = ({ author, url, likes, addLike, id, removeBlog, currentUser, user, blog }) => {
+  //console.log(currentUser.name)
+  //console.log(user)
 
-  if (currentUser.name === user) {
+  //Jos blogin luoja ja nykyinen käyttäjä ovat saman niin poistomahdollisuus on olemassa
+  if (currentUser.name === user.name) {
 
     return (
       <div>
@@ -14,7 +17,8 @@ const BlogDetailForm = ({ author, url, likes, addLike, id, removeBlog, currentUs
     )
   }
 
-  if (currentUser !== user) {
+  //Jos blogin lisäänyt käyttäjä ei ole sama kuin nykyinen käyttäjä, ei blogia voi poistaa
+  if (currentUser.name !== user.name) {
 
     return (
       <div>
